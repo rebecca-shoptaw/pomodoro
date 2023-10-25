@@ -13,7 +13,7 @@ const Pomodoro = () => {
   const [minimal, setMinimal] = useState(false);
   const [pageLoad, setLoaded] = useState(false);
 
-  const interval = useRef();
+  const interval = useRef<NodeJS.Timeout | null>(null);
   let now = "Session";
 
   const beep = document.getElementById("beep") as HTMLAudioElement;
@@ -79,14 +79,14 @@ const Pomodoro = () => {
       }
       if (dist < 0) {
         if (now == "Session") {
-          clearInterval(interval.current);
+          clearInterval(interval.current as NodeJS.Timeout);
           setMinsLeft(breakLength);
           setSecsLeft(0);
           setCurrent("Break");
           now = "Break";
           countDown(breakLength);
         } else if (now == "Break") {
-          clearInterval(interval.current);
+          clearInterval(interval.current as NodeJS.Timeout);
           setCurrent("Session");
           setMinsLeft(sessionLength);
           setSecsLeft(0);
@@ -113,7 +113,7 @@ const Pomodoro = () => {
       }
       setPaused(false);
     } else if (!paused) {
-      clearInterval(interval.current);
+      clearInterval(interval.current as NodeJS.Timeout);
       setPaused(true);
     }
   };
@@ -159,7 +159,7 @@ const Pomodoro = () => {
     setSecsLeft(0);
     setPaused(true);
     beepFunc("pause");
-    clearInterval(interval.current);
+    clearInterval(interval.current as NodeJS.Timeout);
   };
 
   const toggleMode = () => {
